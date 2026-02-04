@@ -1,0 +1,340 @@
+:root {
+  --snow: #fff7f8;
+  --indigo: #39375b;
+  --teal: #028090;
+  --sandy: #fa9f42;
+}
+
+/* Global */
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--snow);
+  color: var(--indigo);
+}
+
+/* Base page */
+.base {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+}
+
+/* Text hierarchy */
+.base h1 {
+  font-size: 2.6rem;
+  margin: 0;
+  color: var(--indigo);
+}
+
+.base h2 {
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin: 0;
+  color: var(--teal); /* accent */
+}
+
+/* Buttons */
+.button-group {
+  display: flex;
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.btn {
+  padding: 12px 34px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+/* Login → teal accent */
+.btn.login {
+  background-color: var(--teal);
+  color: var(--snow);
+}
+
+.btn.login:hover {
+  transform: translateY(-2px);
+  background-color: #016f7c;
+}
+
+/* Signup → sandy accent */
+.btn.signup {
+  background-color: var(--sandy);
+  color: #1f1f1f;
+}
+
+.btn.signup:hover {
+  transform: translateY(-2px);
+  background-color: #f08c2a;
+}
+
+/* Accessibility focus */
+.btn:focus-visible {
+  outline: 3px solid var(--indigo);
+  outline-offset: 2px;
+}
+
+.auth-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: var(--snow);
+  color: var(--indigo);
+}
+
+.auth-card {
+  width: min(420px, 92vw);
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 12px 28px rgba(57, 55, 91, 0.12);
+  border: 1px solid rgba(57, 55, 91, 0.08);
+}
+
+.auth-title {
+  margin: 0;
+  font-size: 2rem;
+  color: var(--indigo);
+}
+
+.auth-subtitle {
+  margin: 8px 0 18px;
+  color: var(--teal);
+  font-weight: 400;
+}
+
+.auth-form {
+  display: grid;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.auth-label {
+  display: grid;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.auth-input {
+  padding: 12px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(57, 55, 91, 0.18);
+  font-size: 15px;
+  outline: none;
+}
+
+.auth-input:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(2, 128, 144, 0.18);
+}
+
+.auth-primary {
+  width: 100%;
+  margin-top: 6px;
+}
+
+/* Link styling */
+.auth-footer {
+  margin: 16px 0 0;
+  font-size: 14px;
+}
+
+.auth-link {
+  color: var(--teal);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.auth-link:hover {
+  text-decoration: underline;
+}
+
+.auth-back {
+  display: inline-block;
+  margin-top: 18px;
+  color: var(--indigo);
+  text-decoration: none;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+.auth-back:hover {
+  opacity: 1;
+}
+
+/* Make Link buttons look like buttons */
+a.btn {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-error {
+  background: rgba(250, 159, 66, 0.18); /* sandy tint */
+  border: 1px solid rgba(250, 159, 66, 0.55);
+  color: var(--indigo);
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+/* ---------- HOME PAGE ---------- */
+
+.page {
+  padding: 32px;
+  background: var(--snow);
+  min-height: 100vh;
+  color: var(--indigo);
+}
+
+.page h1 {
+  margin-bottom: 6px;
+}
+
+.page h2 {
+  color: var(--teal);
+  font-weight: 500;
+  margin-bottom: 24px;
+}
+
+/* White tab header */
+.home-header {
+  background: #ffffff;
+  border: 1px solid rgba(57, 55, 91, 0.1);
+  border-radius: 16px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 10px 22px rgba(57, 55, 91, 0.06);
+  max-width: 1000px;
+  margin-bottom: 18px;
+}
+
+.home-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.home-greeting {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--indigo);
+}
+
+.home-location {
+  font-size: 14px;
+  color: rgba(57, 55, 91, 0.7);
+}
+
+/* Right-side logout button */
+.home-logout {
+  background: var(--sandy);
+  color: #1f1f1f;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.home-logout:hover {
+  transform: translateY(-1px);
+  background: #f08c2a;
+}
+
+.home-logout:focus-visible {
+  outline: 3px solid var(--teal);
+  outline-offset: 2px;
+}
+
+/* ---------- PATIENT TABLE ---------- */
+
+.patient-table {
+  background: white;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(57, 55, 91, 0.08);
+  max-width: 1000px;
+}
+
+/* grid layout */
+.patient-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.4fr 0.8fr 0.8fr 0.8fr;
+  padding: 14px 18px;
+  align-items: center;
+  font-size: 15px;
+}
+
+/* header */
+.patient-row.header {
+  background: rgba(57, 55, 91, 0.08);
+  font-weight: 700;
+  color: var(--indigo);
+}
+
+/* data rows */
+.patient-row:not(.header) {
+  border-top: 1px solid rgba(57, 55, 91, 0.08);
+}
+
+/* zebra striping */
+.patient-row:nth-child(even):not(.header) {
+  background: rgba(57, 55, 91, 0.03);
+}
+
+/* patient name emphasis */
+.patient-row .name {
+  font-weight: 600;
+}
+
+/* vitals alignment */
+.patient-row span:nth-child(4),
+.patient-row span:nth-child(5),
+.patient-row span:nth-child(6) {
+  text-align: center;
+}
+
+/* ---------- EMPTY / ERROR STATES ---------- */
+
+.card {
+  background: white;
+  padding: 18px;
+  border-radius: 14px;
+  box-shadow: 0 8px 18px rgba(57, 55, 91, 0.06);
+}
+
+.card.muted {
+  color: rgba(57, 55, 91, 0.6);
+}
+
+/* ---------- LOGOUT BUTTON ---------- */
+
+.logout-btn {
+  background: var(--sandy);
+  color: #1f1f1f;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background: #f08c2a;
+}
