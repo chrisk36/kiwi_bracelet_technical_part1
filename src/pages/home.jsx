@@ -1,7 +1,7 @@
 import "../styles.css";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import PatientList from "../components/PatientsList.jsx";
+import { useNavigate, Link } from "react-router-dom";
+import PatientsList from "../components/PatientsList.jsx";
 import { fetchNurseProfile, fetchPatients, logout as logoutApi } from "../api";
 
 export default function Home() {
@@ -9,48 +9,67 @@ export default function Home() {
 
   const [profile, setProfile] = useState(null);
   const [patients, setPatients] = useState([]);
-  const [loadingPatients, setLoadingPatients] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  async function loadAll() {
-    setError("");
-    setLoadingPatients(true);
-
-    try {
-      const [prof, pats] = await Promise.all([
-        fetchNurseProfile(),
-        fetchPatients(),
-      ]);
-      setProfile(prof);
-      setPatients(pats);
-    } catch (e) {
-      setError(e.message || "Failed to load data.");
-      if (e?.status === 401) {
-        await logoutApi();
-        navigate("/login", { replace: true });
-      }
-    } finally {
-      setLoadingPatients(false);
-    }
-  }
-
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      navigate("/login", { replace: true });
-      return;
+    let cancelled = false;
+
+    async function run() {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        navigate("/login", { replace: true });
+        return;
+      }
+
+      setLoading(true);
+      setError("");
+
+      try {
+        const [prof, pats] = await Promise.all([
+          fetchNurseProfile(),
+          fetchPatients(),
+        ]);
+        if (cancelled) return;
+
+        setProfile(prof);
+        setPatients(Array.isArray(pats) ? pats : []);
+      } catch (e) {
+        if (cancelled) return;
+
+        const status = e?.status ?? e?.response?.status;
+        setError(e?.message || "Failed to load data.");
+
+        if (status === 401) {
+          try {
+            await logoutApi();
+          } finally {
+            navigate("/login", { replace: true });
+          }
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
     }
-    loadAll();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
+    run();
+    return () => {
+      cancelled = true;
+    };
+  }, [navigate]);
 
   async function handleLogout() {
     await logoutApi();
     navigate("/login", { replace: true });
   }
 
-  // Force name display as requested
-  const nurseName = "Sarah Chen";
+  const nurseName =
+    profile?.fullName ??
+    profile?.name ??
+    profile?.displayName ??
+    (profile?.firstName || profile?.lastName
+      ? `${profile?.firstName || ""} ${profile?.lastName || ""}`.trim()
+      : "—");
 
   const facility =
     profile?.facility ??
@@ -67,29 +86,32 @@ export default function Home() {
           <div className="home-location">{facility}</div>
         </div>
 
-        <button className="home-logout" onClick={handleLogout}>
-          Logout
-        </button>
+        <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+          <Link className="btn login" to="/profile">
+            Profile
+          </Link>
+          <button className="btn signup" onClick={handleLogout}>
+            Logout
+          </button>
+        </div>
       </div>
 
+      <h2>Assigned Patients</h2>
+
       {error ? (
-        <div className="card error">
-          <div className="error-title">Something went wrong</div>
-          <div className="error-msg">{error}</div>
+        <div className="card">
+          <div style={{ fontWeight: 800, marginBottom: 6 }}>
+            Something went wrong
+          </div>
+          <div style={{ color: "rgba(57,55,91,0.75)" }}>{error}</div>
         </div>
       ) : null}
 
-      <div className="section">
-        <h2 className="section-title" style={{ color: "#000000" }}>
-          Assigned Patients
-        </h2>
-
-        {loadingPatients ? (
-          <div className="card muted">Loading patients…</div>
-        ) : (
-          <PatientList patients={patients} />
-        )}
-      </div>
+      {loading ? (
+        <div className="card muted">Loading patients…</div>
+      ) : (
+        <PatientsList patients={patients} />
+      )}
     </div>
   );
 }
